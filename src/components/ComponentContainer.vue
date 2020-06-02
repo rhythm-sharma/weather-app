@@ -1,23 +1,28 @@
 <template>
-  <div class="hello">
-    <h1>
+  <div>
+    <h1 class="mb-5">
       Welcome to
-      <img class="logo" alt="logo" src="../assets/Richpanel.png" /> RichPanel
-      waether App
+      <img class="logo" alt="logo" src="../assets/Richpanel.png" /> Richpanel
+      weather app
     </h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <Search-bar />
+    <search-bar />
+    <weather-forecast-from-current-day />
+    <div class="d-flex justify-content-center">
+      <div class="p-3 mb-5 bg-white w-75">
+        <hourly-temperature />
+      </div>
+    </div>
+    <pressureHumidity />
   </div>
 </template>
 
 <script>
   import SearchBar from "../components/searchBar/searchBar";
+  import weatherForecastFromCurrentDay from "../components/weatherForecastFromCurrentDay/weatherForecastFromCurrentDay";
+  import hourlyTemperature from "../components/hourlyTemperature/hourlyTemperature";
+  import pressureHumidity from "../components/pressureHumidity/pressureHumidity";
+  import { getGeoLocation } from "../../utils/geoLocation";
+
   export default {
     name: "ComponentContainer",
     props: {
@@ -25,6 +30,12 @@
     },
     components: {
       SearchBar,
+      weatherForecastFromCurrentDay,
+      hourlyTemperature,
+      pressureHumidity,
+    },
+    methods: {
+      getGeoLocation,
     },
   };
 </script>
@@ -49,5 +60,9 @@
   .logo {
     height: 30px;
     width: 30px;
+  }
+
+  .box-shadow {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.175) !important;
   }
 </style>

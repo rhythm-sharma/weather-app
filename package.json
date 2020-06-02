@@ -9,8 +9,11 @@
   },
   "dependencies": {
     "bootstrap-vue": "^2.1.0",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "numeral": "^2.0.6",
+    "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.7.0",
