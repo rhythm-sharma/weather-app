@@ -1,30 +1,64 @@
 <template>
-  <div class="weather-forcast-container">
-    <div class="day-name" style="" aria-label="Tuesday">
-      Tue
-    </div>
-    <div class="weather-icon-container">
-      <img
-        class="weather-icon-container"
-        src="//ssl.gstatic.com/onebox/weather/48/rain_s_cloudy.png"
-      />
-    </div>
-    <div class="temperature">
-      <div class="temp-max">
-        <span class="temp-text">38</span>
-        <span>&#176;</span>
+  <div class="main-weather-forcast-container">
+    <div
+      v-for="(item, index) in dailyData"
+      :key="index"
+      class="weather-forcast-container mx-2"
+    >
+      <div class="day-name" style="" aria-label="Tuesday">
+        Tue
       </div>
-      <div class="temp-min">
-        <span class="temp-text temp-min-text">27</span>
-        <span>&#176;</span>
+      <div class="temperature">
+        <div class="temp-max">
+          <span class="temp-text">{{ tempratureToDegree(item.temp.max) }}</span>
+          <span>&#176;</span>
+        </div>
+        <div class="temp-min">
+          <span class="temp-text text-muted">{{
+            tempratureToDegree(item.temp.min)
+          }}</span>
+          <span>&#176;</span>
+        </div>
       </div>
+      <div class="weather-icon-container">
+        <img
+          class="weather-icon"
+          :src="getWeatherImage(item.weather[0].icon)"
+        />
+      </div>
+      <span class="weather-type">
+        {{ item.weather[0].main }}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+  import { tempratureToDegree } from "../../../utils/utils";
+
   export default {
     name: "weatherForecastFromCurrentDay",
+    props: {
+      dailyData: {
+        type: Array,
+        default: () => [],
+      },
+    },
+    data() {
+      return {
+        foreCastData: [],
+      };
+    },
+    mounted() {
+      this.foreCastData = this.dailyData;
+      //   this.foreCastData = this.foreCastData.slice(0, -1);
+    },
+    methods: {
+      tempratureToDegree,
+      getWeatherImage(icon) {
+        return `http://openweathermap.org/img/wn/${icon}@2x.png`;
+      },
+    },
   };
 </script>
 
@@ -43,7 +77,6 @@
     transition-duration: 200ms, 200ms, 200ms;
     transition-property: background-image, border, font-weight;
     font-weight: 13px;
-    height: 90px;
     width: 73px;
   }
 
@@ -62,10 +95,16 @@
     width: 48px;
   }
 
-  .temperature {
+  .temperature,
+  .weather-type {
     font-weight: normal;
     line-height: 15px;
     font-size: 13px;
+  }
+
+  .weather-type {
+    font-weight: 600;
+    color: darkgray;
   }
 
   .temp-max {
@@ -79,9 +118,5 @@
 
   .temp-text {
     display: inline;
-  }
-
-  .temp-min-text {
-    color: #bababa !important;
   }
 </style>

@@ -61,6 +61,7 @@
 <script>
   import LineChart from "./lineChart";
   import Sun from "../../assets/sun.svg";
+  import { tempratureToDegree } from "../../../utils/utils";
 
   const options = {
     legend: {
@@ -99,25 +100,46 @@
     components: {
       LineChart,
     },
+
+    props: {
+      hourData: {
+        type: Array,
+        default: () => [],
+      },
+    },
+
     data() {
       return {
         Sun,
-        datasets: [
-          {
-            label: "Temperature",
-            data: [18, 26, 14, 22, 12, 20, 12, 18, 10],
-            fill: false,
-            borderColor: "rgba(66, 133, 244, 0.2)",
-            borderWidth: 3,
-            pointBackgroundColor: "transparent",
-            pointBorderColor: "#4285f4",
-            pointBorderWidth: 3,
-            pointHoverBorderColor: "rgba(66, 133, 244, 0.2)",
-            pointHoverBorderWidth: 10,
-            lineTension: 0,
-          },
-        ],
+        datasets: [],
       };
+    },
+
+    mounted() {
+      let hourlyTemprature = [];
+      this.hourData.forEach((item) => {
+        hourlyTemprature.push(tempratureToDegree(item.temp));
+      });
+
+      this.datasets = [
+        {
+          label: "Temperature",
+          data: hourlyTemprature,
+          fill: false,
+          borderColor: "rgba(66, 133, 244, 0.2)",
+          borderWidth: 3,
+          pointBackgroundColor: "transparent",
+          pointBorderColor: "#4285f4",
+          pointBorderWidth: 3,
+          pointHoverBorderColor: "rgba(66, 133, 244, 0.2)",
+          pointHoverBorderWidth: 10,
+          lineTension: 0,
+        },
+      ];
+    },
+
+    methods: {
+      tempratureToDegree,
     },
   };
 </script>

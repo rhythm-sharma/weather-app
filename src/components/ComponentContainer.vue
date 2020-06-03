@@ -6,13 +6,16 @@
       weather app
     </h1>
     <search-bar />
-    <weather-forecast-from-current-day />
+    <weather-forecast-from-current-day :dailyData="weatherData.daily" />
     <div class="d-flex justify-content-center">
       <div class="p-3 mb-5 bg-white w-75">
-        <hourly-temperature />
+        <hourly-temperature
+          v-if="weatherData.hourly"
+          :hourData="weatherData.hourly"
+        />
       </div>
     </div>
-    <pressureHumidity />
+    <pressure-humidity />
   </div>
 </template>
 
@@ -21,21 +24,20 @@
   import weatherForecastFromCurrentDay from "../components/weatherForecastFromCurrentDay/weatherForecastFromCurrentDay";
   import hourlyTemperature from "../components/hourlyTemperature/hourlyTemperature";
   import pressureHumidity from "../components/pressureHumidity/pressureHumidity";
-  import { getGeoLocation } from "../../utils/geoLocation";
 
   export default {
     name: "ComponentContainer",
     props: {
-      msg: String,
+      weatherData: {
+        type: Object,
+        default: () => {},
+      },
     },
     components: {
       SearchBar,
       weatherForecastFromCurrentDay,
       hourlyTemperature,
       pressureHumidity,
-    },
-    methods: {
-      getGeoLocation,
     },
   };
 </script>
