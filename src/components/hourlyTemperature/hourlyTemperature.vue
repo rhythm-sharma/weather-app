@@ -1,7 +1,7 @@
 <template>
   <div class="temp-card ml-auto mr-auto">
     <!-- Custom information -->
-    <div class="about text-left">
+    <div v-if="currentData" class="about text-left">
       <span class="lead"
         >{{ tempratureToDegree(currentData.feels_like) }} °C</span
       >
@@ -11,6 +11,17 @@
         class="ml-3 mb-4 w-15"
       />
     </div>
+    <ContentLoader
+      v-else
+      :width="400"
+      :height="50"
+      :speed="2"
+      primaryColor="#f3f3f3"
+      secondaryColor="#ecebeb"
+    >
+      <rect x="8" y="8" rx="3" ry="3" width="108" height="6" />
+      <rect x="8" y="20" rx="3" ry="3" width="108" height="6" />
+    </ContentLoader>
 
     <!-- Canvas -->
     <line-chart
@@ -21,6 +32,16 @@
       :datasets="datasets"
       :options="$options.options"
     ></line-chart>
+    <ContentLoader
+      v-else
+      :width="400"
+      :height="150"
+      :speed="2"
+      primaryColor="#f3f3f3"
+      secondaryColor="#ecebeb"
+    >
+      <rect x="55" y="42" rx="16" ry="16" width="274" height="216" />
+    </ContentLoader>
 
     <!-- Custom Axis -->
     <!-- <div class="axis">
@@ -67,6 +88,7 @@
   import LineChart from "./lineChart";
   import Sun from "../../assets/sun.svg";
   import { tempratureToDegree, getWeatherImage } from "../../../utils/utils";
+  import { ContentLoader } from "vue-content-loader";
 
   const options = {
     responsive: false,
@@ -105,6 +127,7 @@
     options,
     components: {
       LineChart,
+      ContentLoader,
     },
 
     props: {

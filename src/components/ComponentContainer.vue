@@ -10,19 +10,27 @@
       v-if="weatherData && weatherData.daily"
       :dailyData="weatherData && weatherData.daily.slice(0, 7)"
     />
+    <ContentLoader
+      v-else
+      class="ml-auto mr-auto"
+      :width="400"
+      :height="50"
+      :speed="2"
+      primaryColor="#f3f3f3"
+      secondaryColor="#ecebeb"
+    >
+      <rect x="118" y="06" width="170" height="6" rx="3" />
+      <rect x="118" y="16" width="170" height="6" rx="3" />
+    </ContentLoader>
     <div class="d-flex justify-content-center">
       <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
         <hourly-temperature
-          v-if="weatherData && weatherData.hourly && weatherData.current"
           :hourData="weatherData && weatherData.hourly.slice(0, 24)"
           :currentData="weatherData && weatherData.current"
         />
       </div>
     </div>
-    <pressure-humidity
-      v-if="weatherData && weatherData.current"
-      :currentData="weatherData && weatherData.current"
-    />
+    <pressure-humidity :currentData="weatherData && weatherData.current" />
   </div>
 </template>
 
@@ -31,6 +39,7 @@
   import weatherForecastFromCurrentDay from "../components/weatherForecastFromCurrentDay/weatherForecastFromCurrentDay";
   import hourlyTemperature from "../components/hourlyTemperature/hourlyTemperature";
   import pressureHumidity from "../components/pressureHumidity/pressureHumidity";
+  import { ContentLoader } from "vue-content-loader";
 
   export default {
     name: "ComponentContainer",
@@ -45,6 +54,7 @@
       weatherForecastFromCurrentDay,
       hourlyTemperature,
       pressureHumidity,
+      ContentLoader,
     },
   };
 </script>

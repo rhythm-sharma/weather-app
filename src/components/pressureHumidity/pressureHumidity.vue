@@ -7,15 +7,33 @@
         class="text-left bg-blue w-50 pl-2 pt-2"
         :class="{ 'mr-4': index === 0 }"
       >
-        <h4 class="">{{ item.name }}</h4>
-        <p v-if="item.name === 'Pressure'" class="">{{ item.value }} hpa</p>
-        <p v-if="item.name === 'Humidity'" class="">{{ item.value }} %</p>
+        <div v-if="item.value && item.name">
+          <h4 class="">{{ item.name }}</h4>
+          <p v-if="item.value && item.name === 'Pressure'" class="">
+            {{ item.value }} hpa
+          </p>
+          <p v-if="item.value && item.name === 'Humidity'" class="">
+            {{ item.value }} %
+          </p>
+        </div>
+        <ContentLoader
+          v-else
+          :width="400"
+          :height="150"
+          :speed="2"
+          primaryColor="#f3f3f3"
+          secondaryColor="#ecebeb"
+        >
+          <rect x="8" y="8" rx="3" ry="3" width="108" height="16" />
+        </ContentLoader>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import { ContentLoader } from "vue-content-loader";
+
   export default {
     name: "pressureHumidity",
 
@@ -24,6 +42,10 @@
         type: Object,
         required: true,
       },
+    },
+
+    components: {
+      ContentLoader,
     },
 
     data() {
