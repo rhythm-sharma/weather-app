@@ -8,7 +8,8 @@
         :class="{ 'mr-4': index === 0 }"
       >
         <h4 class="">{{ item.name }}</h4>
-        <p class="">{{ item.value }}</p>
+        <p v-if="item.name === 'Pressure'" class="">{{ item.value }} hpa</p>
+        <p v-if="item.name === 'Humidity'" class="">{{ item.value }} %</p>
       </div>
     </div>
   </div>
@@ -18,19 +19,32 @@
   export default {
     name: "pressureHumidity",
 
+    props: {
+      currentData: {
+        type: Object,
+        required: true,
+      },
+    },
+
     data() {
       return {
         Values: [
           {
             name: "Pressure",
-            value: "1013",
+            value: `${this.currentData && this.currentData.pressure}` || "",
           },
           {
             name: "Humidity",
-            value: "93%",
+            value: `${this.currentData && this.currentData.humidity}` || "",
           },
         ],
       };
+    },
+    watch: {
+      currentData(newCurrentData) {
+        this.Values[0].value = newCurrentData.pressure;
+        this.Values[1].value = newCurrentData.humidity;
+      },
     },
   };
 </script>

@@ -1,5 +1,12 @@
 <template>
-  <canvas ref="myChart" :width="width" :height="height"></canvas>
+  <div style="max-height: 256px;max-width:256px;overflow: scroll;">
+    <canvas
+      class="canvas"
+      ref="myChart"
+      :width="width"
+      :height="height"
+    ></canvas>
+  </div>
 </template>
 
 <script>
@@ -21,7 +28,10 @@
       },
 
       // The chart's data.labels
-      labels: Array,
+      labels: {
+        type: Array,
+        required: true,
+      },
 
       // The chart's data.datasets
       datasets: {
@@ -31,6 +41,11 @@
 
       // The chart's options.
       options: Object,
+
+      hourData: {
+        type: Array,
+        default: () => [],
+      },
     },
     data() {
       return {
@@ -42,6 +57,10 @@
         // Replace the datasets and call the update() method on Chart.js
         // instance to re-render the chart.
         this.chart.data.datasets = newDatasets;
+        this.chart.update();
+      },
+      labels(newLabels) {
+        this.chart.data.labels = newLabels;
         this.chart.update();
       },
     },
@@ -63,3 +82,9 @@
     },
   };
 </script>
+
+<style scoped>
+  .canvas {
+    overflow: scroll;
+  }
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bar mb-4">
+  <div class="bar mb-5">
     <input class="searchbar" type="text" title="Search" />
     <i v-if="UserIstyping" class="fas fa-times"></i>
     <i v-else class="fas fa-search"></i>

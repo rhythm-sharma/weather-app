@@ -2,17 +2,22 @@
   <div class="temp-card ml-auto mr-auto">
     <!-- Custom information -->
     <div class="about text-left">
-      <span class="lead">26 °C</span>
-      <img :src="Sun" alt="" class="ml-3 mb-4 w-15" />
+      <span class="lead"
+        >{{ tempratureToDegree(currentData.feels_like) }} °C</span
+      >
+      <img
+        :src="getWeatherImage(currentData.weather[0].icon)"
+        alt=""
+        class="ml-3 mb-4 w-15"
+      />
     </div>
 
-    <!-- Canvas for Chart.js -->
-    <!-- <canvas ref="canvas"></canvas> -->
-
+    <!-- Canvas -->
     <line-chart
+      v-if="datasets && labels"
       :width="500"
       :height="300"
-      :labels="['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN', 'MON']"
+      :labels="labels"
       :datasets="datasets"
       :options="$options.options"
     ></line-chart>
@@ -61,7 +66,7 @@
 <script>
   import LineChart from "./lineChart";
   import Sun from "../../assets/sun.svg";
-  import { tempratureToDegree } from "../../../utils/utils";
+  import { tempratureToDegree, getWeatherImage } from "../../../utils/utils";
 
   const options = {
     legend: {
@@ -106,20 +111,28 @@
         type: Array,
         default: () => [],
       },
+      currentData: {
+        type: Object,
+        default: () => {},
+      },
     },
 
     data() {
       return {
         Sun,
         datasets: [],
+        labels: [],
       };
     },
 
     mounted() {
       let hourlyTemprature = [];
+
       this.hourData.forEach((item) => {
         hourlyTemprature.push(tempratureToDegree(item.temp));
       });
+
+      console.log("hourlyTemprature", hourlyTemprature);
 
       this.datasets = [
         {
@@ -136,10 +149,27 @@
           lineTension: 0,
         },
       ];
+
+      let tempLabels = [];
+      const date = new Date();
+
+      this.hourData.forEach((item, index) => {
+        tempLabels.push(this.formatAMPM(date.getHours() + index));
+      });
+
+      this.labels = tempLabels;
     },
 
     methods: {
       tempratureToDegree,
+      getWeatherImage,
+      formatAMPM(hours) {
+        const ampm = hours >= 12 ? "pm" : "am";
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const strTime = hours + ampm;
+        return strTime;
+      },
     },
   };
 </script>

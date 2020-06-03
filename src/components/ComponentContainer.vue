@@ -6,16 +6,23 @@
       weather app
     </h1>
     <search-bar />
-    <weather-forecast-from-current-day :dailyData="weatherData.daily" />
+    <weather-forecast-from-current-day
+      v-if="weatherData && weatherData.daily"
+      :dailyData="weatherData && weatherData.daily.slice(0, 7)"
+    />
     <div class="d-flex justify-content-center">
       <div class="p-3 mb-5 bg-white w-75">
         <hourly-temperature
-          v-if="weatherData.hourly"
-          :hourData="weatherData.hourly"
+          v-if="weatherData && weatherData.hourly && weatherData.current"
+          :hourData="weatherData && weatherData.hourly.slice(0, 24)"
+          :currentData="weatherData && weatherData.current"
         />
       </div>
     </div>
-    <pressure-humidity />
+    <pressure-humidity
+      v-if="weatherData && weatherData.current"
+      :currentData="weatherData && weatherData.current"
+    />
   </div>
 </template>
 

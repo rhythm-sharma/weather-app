@@ -1,12 +1,12 @@
 <template>
-  <div class="main-weather-forcast-container">
+  <div class="main-weather-forcast-container mb-5">
     <div
       v-for="(item, index) in dailyData"
       :key="index"
       class="weather-forcast-container mx-2"
     >
       <div class="day-name" style="" aria-label="Tuesday">
-        Tue
+        {{ days[index] }}
       </div>
       <div class="temperature">
         <div class="temp-max">
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import { tempratureToDegree } from "../../../utils/utils";
+  import { tempratureToDegree, getWeatherImage } from "../../../utils/utils";
 
   export default {
     name: "weatherForecastFromCurrentDay",
@@ -44,20 +44,47 @@
         default: () => [],
       },
     },
+
     data() {
       return {
-        foreCastData: [],
+        forCastData: [],
+        days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       };
     },
+
     mounted() {
-      this.foreCastData = this.dailyData;
-      //   this.foreCastData = this.foreCastData.slice(0, -1);
+      this.forCastData = this.dailyData;
+      this.forCastData = this.forCastData.slice(0, -1);
+
+      let today = new Date();
+      let index = 0;
+      let a1 = [];
+      let a2 = [];
+      let newDays = [];
+
+      today = new Date();
+      index = today.getDay();
+
+      a1 = this.days.slice(0, index);
+      a2 = this.days.slice(index);
+      a2 = a2.slice(1);
+
+      newDays.push(this.days[index]);
+
+      a2.forEach((i) => {
+        newDays.push(i);
+      });
+
+      a1.forEach((i) => {
+        newDays.push(i);
+      });
+
+      this.days = newDays;
     },
+
     methods: {
       tempratureToDegree,
-      getWeatherImage(icon) {
-        return `http://openweathermap.org/img/wn/${icon}@2x.png`;
-      },
+      getWeatherImage,
     },
   };
 </script>
