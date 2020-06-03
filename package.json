@@ -14,7 +14,8 @@
     "core-js": "^3.6.5",
     "numeral": "^2.0.6",
     "vue": "^2.6.11",
-    "vue-chartjs": "^3.5.0"
+    "vue-chartjs": "^3.5.0",
+    "vue-content-loader": "^0.2.3"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.7.0",
