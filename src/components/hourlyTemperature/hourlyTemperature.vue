@@ -15,7 +15,7 @@
     <!-- Canvas -->
     <line-chart
       v-if="datasets && labels"
-      :width="500"
+      :width="900"
       :height="300"
       :labels="labels"
       :datasets="datasets"
@@ -69,6 +69,7 @@
   import { tempratureToDegree, getWeatherImage } from "../../../utils/utils";
 
   const options = {
+    responsive: false,
     legend: {
       display: false,
     },
@@ -179,7 +180,8 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
     /* background: black; */
     position: relative;
-    width: 400px;
+    width: auto;
+    max-width: 700px;
     border-radius: 10px;
     overflow: hidden;
   }
@@ -305,5 +307,11 @@
 
   .w-15 {
     width: 15% !important;
+  }
+
+  @media screen and (max-width: 700px) {
+    .temp-card {
+      width: 90vw;
+    }
   }
 </style>

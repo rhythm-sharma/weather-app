@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="component-container">
     <h1 class="mb-5">
       Welcome to
       <img class="logo" alt="logo" src="../assets/Richpanel.png" /> Richpanel
@@ -11,7 +11,7 @@
       :dailyData="weatherData && weatherData.daily.slice(0, 7)"
     />
     <div class="d-flex justify-content-center">
-      <div class="p-3 mb-5 bg-white w-75">
+      <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
         <hourly-temperature
           v-if="weatherData && weatherData.hourly && weatherData.current"
           :hourData="weatherData && weatherData.hourly.slice(0, 24)"
@@ -73,5 +73,15 @@
 
   .box-shadow {
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.175) !important;
+  }
+
+  .hourly-temperature-container {
+    width: 700px;
+  }
+
+  @media screen and (max-width: 800px) {
+    .hourly-temperature-container {
+      width: auto !important;
+    }
   }
 </style>

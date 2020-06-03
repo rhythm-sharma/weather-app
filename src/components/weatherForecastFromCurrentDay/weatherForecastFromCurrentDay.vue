@@ -1,34 +1,38 @@
 <template>
-  <div class="main-weather-forcast-container mb-5">
-    <div
-      v-for="(item, index) in dailyData"
-      :key="index"
-      class="weather-forcast-container mx-2"
-    >
-      <div class="day-name" style="" aria-label="Tuesday">
-        {{ days[index] }}
-      </div>
-      <div class="temperature">
-        <div class="temp-max">
-          <span class="temp-text">{{ tempratureToDegree(item.temp.max) }}</span>
-          <span>&#176;</span>
+  <div class="d-flex justify-content-center">
+    <div class="d-flex flex-row main-weather-forcast-container mb-5 pb-3 mb-5">
+      <div
+        v-for="(item, index) in dailyData"
+        :key="index"
+        class="weather-forcast-container m-2"
+      >
+        <div class="day-name" style="" aria-label="Tuesday">
+          {{ days[index] }}
         </div>
-        <div class="temp-min">
-          <span class="temp-text text-muted">{{
-            tempratureToDegree(item.temp.min)
-          }}</span>
-          <span>&#176;</span>
+        <div class="temperature">
+          <div class="temp-max">
+            <span class="temp-text">{{
+              tempratureToDegree(item.temp.max)
+            }}</span>
+            <span>&#176;</span>
+          </div>
+          <div class="temp-min">
+            <span class="temp-text text-muted">{{
+              tempratureToDegree(item.temp.min)
+            }}</span>
+            <span>&#176;</span>
+          </div>
         </div>
+        <div class="weather-icon-container">
+          <img
+            class="weather-icon"
+            :src="getWeatherImage(item.weather[0].icon)"
+          />
+        </div>
+        <span class="weather-type">
+          {{ item.weather[0].main }}
+        </span>
       </div>
-      <div class="weather-icon-container">
-        <img
-          class="weather-icon"
-          :src="getWeatherImage(item.weather[0].icon)"
-        />
-      </div>
-      <span class="weather-type">
-        {{ item.weather[0].main }}
-      </span>
     </div>
   </div>
 </template>
@@ -90,12 +94,12 @@
 </script>
 
 <style scoped>
-  .weather-forcast-container:hover {
+  /* .weather-forcast-container:hover {
     background-color: #fcfcfc;
     border: 1px solid #e9e9e9;
     border-radius: 1px;
     margin: 0;
-  }
+  } */
 
   .weather-forcast-container {
     display: inline-block;
@@ -145,5 +149,12 @@
 
   .temp-text {
     display: inline;
+  }
+
+  @media screen and (max-width: 700px) {
+    .main-weather-forcast-container {
+      max-width: 95vw;
+      overflow: scroll;
+    }
   }
 </style>

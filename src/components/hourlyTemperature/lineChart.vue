@@ -1,7 +1,7 @@
 <template>
-  <div style="max-height: 256px;max-width:256px;overflow: scroll;">
+  <div style="overflow: scroll;">
     <canvas
-      class="canvas"
+      class="canvas pb-3"
       ref="myChart"
       :width="width"
       :height="height"
