@@ -17,7 +17,7 @@
 
     <div v-else>
       <!-- Search Bar -->
-      <search-bar />
+      <search-bar v-if="status === 'success'" />
 
       <!-- weather forecast from current upto 7 days  -->
       <weather-forecast-from-current-day

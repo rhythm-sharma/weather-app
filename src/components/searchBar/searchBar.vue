@@ -10,12 +10,12 @@
           title="Search"
         />
         <i v-if="UserIstyping" class="fas fa-times"></i>
-        <i v-else type="submit" class="fas fa-search"></i>
+        <i v-else type="submit" @click="handleSubmit" class="fas fa-search"></i>
       </form>
     </div>
     <div class="d-flex justify-content-center">
       <div
-        v-click-outside="hideSuggestions"
+        v-click-outside="clearSuggestions"
         v-if="
           searchStr.length >= 3 &&
             firstLoad === false &&
@@ -62,6 +62,7 @@
 
     mounted() {
       this.firstLoad = true;
+      this.searchStr = this.geoLocationCityName;
       this.getCityDataFromLocalStorage();
     },
 
@@ -126,12 +127,6 @@
     },
 
     watch: {
-      "$store.state.geoLocationCityName"(value, oldValue) {
-        console.log(value, oldValue);
-        if (value !== oldValue) {
-          this.searchStr = value;
-        }
-      },
       searchStr(value) {
         if (value.length >= 3) {
           let results = this.cityData.filter((cityObj) => {

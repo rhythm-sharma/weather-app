@@ -68,9 +68,7 @@
 
         // get Geo-Location using IP
         try {
-          geoLocResponse = await this.$http.get(
-            "https://demo.ip-api.com/json/"
-          );
+          geoLocResponse = await this.$http.get("https://freegeoip.app/json/");
           console.log("geoLocResponse", geoLocResponse);
           this.handleCityName(geoLocResponse.data.city);
         } catch (error) {
@@ -82,7 +80,7 @@
         try {
           if (geoLocResponse) {
             weatherResponse = await this.$http.get(
-              `${this.baseUrl}lat=${geoLocResponse.data.lat}&lon=${geoLocResponse.data.lon}&appid=${this.appId}`
+              `${this.baseUrl}lat=${geoLocResponse.data.latitude}&lon=${geoLocResponse.data.longitude}&appid=${this.appId}`
             );
             this.handleStatus("success");
             console.log("weatherResponse: ", weatherResponse);
