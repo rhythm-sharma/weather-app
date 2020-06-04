@@ -194,4 +194,10 @@
       width: 85vw;
     }
   }
+
+  @media screen and (max-width: 425px) {
+    .searchbar {
+      width: 75vw;
+    }
+  }
 </style>
