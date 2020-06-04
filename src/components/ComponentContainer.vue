@@ -74,6 +74,7 @@
   import hourlyTemperature from "../components/hourlyTemperature/hourlyTemperature";
   import pressureHumidity from "../components/pressureHumidity/pressureHumidity";
   import { ContentLoader } from "vue-content-loader";
+  import { mapGetters } from "vuex";
 
   export default {
     name: "ComponentContainer",
@@ -82,10 +83,6 @@
         type: Object,
         default: () => {},
       },
-      status: {
-        type: String,
-        default: "",
-      },
     },
     components: {
       SearchBar,
@@ -93,6 +90,10 @@
       hourlyTemperature,
       pressureHumidity,
       ContentLoader,
+    },
+
+    computed: {
+      ...mapGetters(["status"]),
     },
   };
 </script>

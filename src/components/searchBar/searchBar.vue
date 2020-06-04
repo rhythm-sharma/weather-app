@@ -1,19 +1,78 @@
 <template>
   <div class="bar mb-5">
-    <input class="searchbar" type="text" title="Search" />
-    <i v-if="UserIstyping" class="fas fa-times"></i>
-    <i v-else class="fas fa-search"></i>
+    <form @submit.prevent="handleSubmit()">
+      <input v-model="searchStr" class="searchbar" title="Search" />
+      <i v-if="UserIstyping" class="fas fa-times"></i>
+      <i v-else type="submit" class="fas fa-search"></i>
+    </form>
   </div>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from "vuex";
+
   export default {
     name: "SearchBar",
 
     data() {
       return {
         UserIstyping: false,
+        searchStr: "",
+        baseLatLonAPI: "https://api.openweathermap.org/data/2.5/weather?",
+        baseWeatherAPI: "https://api.openweathermap.org/data/2.5/onecall?",
       };
+    },
+
+    computed: {
+      ...mapGetters(["appId", "geoLocationCityName"]),
+    },
+
+    methods: {
+      ...mapActions(["handleStatus", "handleWeatherData"]),
+      handleSubmit() {
+        console.log("submit", this.searchStr);
+        this.getWeatherResponse(this.searchStr);
+      },
+      // get the weather response
+      async getWeatherResponse(searchStr) {
+        this.handleStatus("loading");
+        let LatLonResponse;
+        let weatherResponse;
+
+        // get Lat and Lon
+        try {
+          LatLonResponse = await this.$http.get(
+            `${this.baseLatLonAPI}q=${searchStr}&appid=${this.appId}`
+          );
+          console.log("LatLonResponse", LatLonResponse);
+        } catch (error) {
+          console.log("Request failed.  Returned status of", error);
+          this.handleStatus("error");
+        }
+
+        try {
+          if (LatLonResponse) {
+            weatherResponse = await this.$http.get(
+              `${this.baseWeatherAPI}lat=${LatLonResponse.data.coord.lat}&lon=${LatLonResponse.data.coord.lon}&appid=${this.appId}`
+            );
+            console.log("weatherResponse: ", weatherResponse);
+            this.handleWeatherData(weatherResponse.data);
+            this.handleStatus("success");
+          }
+        } catch (error) {
+          console.log("Request failed.  Returned status of", error);
+          this.handleStatus("error");
+        }
+      },
+    },
+
+    watch: {
+      "$store.state.geoLocationCityName"(value, oldValue) {
+        console.log(value, oldValue);
+        if (value !== oldValue) {
+          this.searchStr = value;
+        }
+      },
     },
   };
 </script>

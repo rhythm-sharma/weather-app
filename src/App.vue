@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <ComponentContainer :status="status" :weatherData="weatherData" />
+    <ComponentContainer :weatherData="weatherData" />
   </div>
 </template>
 
 <script>
   import ComponentContainer from "./components/ComponentContainer.vue";
+  import { mapActions, mapGetters } from "vuex";
 
   export default {
     name: "App",
@@ -18,10 +19,11 @@
         baseUrl: "https://api.openweathermap.org/data/2.5/onecall?",
         lat: "",
         lon: "",
-        appId: "3e235f332dbb113f10b747e66f2a40da",
-        weatherData: {},
-        status: "",
       };
+    },
+
+    computed: {
+      ...mapGetters(["status", "weatherData", "appId"]),
     },
 
     mounted() {
@@ -29,8 +31,9 @@
     },
 
     methods: {
+      ...mapActions(["handleStatus", "handleWeatherData", "handleCityName"]),
       getGeoLocation() {
-        this.status = "loading";
+        this.handleStatus("loading");
         const that = this;
         if ("geolocation" in navigator) {
           // check if geolocation is supported/enabled on current browser
@@ -64,6 +67,7 @@
         try {
           geoLocResponse = await this.$http.get("http://ip-api.com/json");
           console.log("geoLocResponse", geoLocResponse);
+          this.handleCityName(geoLocResponse.data.city);
         } catch (error) {
           console.log("Request failed.  Returned status of", error);
         }
@@ -74,20 +78,20 @@
             weatherResponse = await this.$http.get(
               `${this.baseUrl}lat=${geoLocResponse.data.lat}&lon=${geoLocResponse.data.lon}&appid=${this.appId}`
             );
-            this.status = "success";
+            this.handleStatus("success");
             console.log("weatherResponse: ", weatherResponse);
-            this.weatherData = weatherResponse.data;
+            this.handleWeatherData(weatherResponse.data);
           } else if (position) {
             weatherResponse = await this.$http.get(
               `${this.baseUrl}lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${this.appId}`
             );
             console.log("weatherResponse: ", weatherResponse);
-            this.weatherData = weatherResponse.data;
-            this.status = "success";
+            this.handleWeatherData(weatherResponse.data);
+            this.handleStatus("success");
           }
         } catch (error) {
           console.log("Request failed.  Returned status of", error);
-          this.status = "error";
+          this.handleStatus("error");
         }
       },
     },
