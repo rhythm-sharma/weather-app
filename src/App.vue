@@ -68,11 +68,14 @@
 
         // get Geo-Location using IP
         try {
-          geoLocResponse = await this.$http.get("http://ip-api.com/json");
+          geoLocResponse = await this.$http.get(
+            "https://demo.ip-api.com/json/"
+          );
           console.log("geoLocResponse", geoLocResponse);
           this.handleCityName(geoLocResponse.data.city);
         } catch (error) {
           console.log("Request failed.  Returned status of", error);
+          this.handleStatus("error");
         }
 
         // get the weather response
