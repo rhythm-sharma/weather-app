@@ -6,7 +6,7 @@
     <!-- weather forecast from current upto 7 days  -->
     <weather-forecast-from-current-day
       v-if="status === 'success'"
-      :dailyData="weatherData && weatherData.daily.slice(0.7)"
+      :dailyData="weatherData && weatherData.daily.slice(0, 7)"
     />
     <!-- The below div will be shown in loading state  -->
     <ContentLoader
@@ -27,7 +27,7 @@
       <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
         <hourly-temperature
           v-if="status === 'success'"
-          :hourData="weatherData && weatherData.hourly.slice(0.24)"
+          :hourData="weatherData && weatherData.hourly.slice(0, 24)"
           :currentData="weatherData && weatherData.current"
         />
         <!-- The below div will be shown in loading state -->

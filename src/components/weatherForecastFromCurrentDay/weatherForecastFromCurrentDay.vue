@@ -6,7 +6,7 @@
         :key="index"
         class="weather-forcast-container m-2"
       >
-        <div class="day-name" style="" aria-label="Tuesday">
+        <div class="day-name" style="" :aria-label="days[index]">
           {{ days[index] }}
         </div>
         <div class="temperature">
