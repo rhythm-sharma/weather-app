@@ -3,68 +3,83 @@
     <!-- Search Bar -->
     <search-bar />
 
-    <!-- weather forecast from current upto 7 days  -->
-    <weather-forecast-from-current-day
-      v-if="status === 'success'"
-      :dailyData="weatherData && weatherData.daily.slice(0, 7)"
-    />
-    <!-- The below div will be shown in loading state  -->
-    <ContentLoader
-      v-else-if="status === 'loading'"
-      class="ml-auto mr-auto"
-      :width="400"
-      :height="50"
-      :speed="2"
-      primaryColor="#f3f3f3"
-      secondaryColor="#ecebeb"
-    >
-      <rect x="118" y="06" width="170" height="6" rx="3" />
-      <rect x="118" y="16" width="170" height="6" rx="3" />
-    </ContentLoader>
-
-    <!-- The below code, shows the hourly temprature data -->
-    <div class="d-flex justify-content-center">
-      <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
-        <hourly-temperature
-          v-if="status === 'success'"
-          :hourData="weatherData && weatherData.hourly.slice(0, 24)"
-          :currentData="weatherData && weatherData.current"
-        />
-        <!-- The below div will be shown in loading state -->
-        <ContentLoader
-          v-else-if="status === 'loading'"
-          :width="400"
-          :height="150"
-          :speed="2"
-          primaryColor="#f3f3f3"
-          secondaryColor="#ecebeb"
-        >
-          <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
-          <rect x="86" y="11" rx="3" ry="3" width="7" height="135" />
-          <rect x="88" y="9" rx="3" ry="3" width="231" height="7" />
-          <rect x="87" y="139" rx="3" ry="3" width="230" height="8" />
-          <rect x="104" y="27" rx="0" ry="0" width="42" height="19" />
-          <rect x="314" y="11" rx="0" ry="0" width="7" height="136" />
-          <rect x="103" y="64" rx="0" ry="0" width="202" height="62" />
-        </ContentLoader>
+    <div v-if="status === 'error'">
+      <div class="alert alert-danger inline" role="alert">
+        <strong>Oh snap!</strong> Something went wrong, Please try again after
+        some time
       </div>
     </div>
 
-    <pressure-humidity
-      v-if="status === 'success'"
-      :currentData="weatherData && weatherData.current"
-    />
-    <content-loader
-      v-else-if="status === 'loading'"
-      :width="400"
-      :height="160"
-      :speed="2"
-      primaryColor="#f3f3f3"
-      secondaryColor="#ecebeb"
-    >
-      <rect x="200" y="3" rx="0" ry="0" width="49" height="39" />
-      <rect x="140" y="4" rx="0" ry="0" width="52" height="39" />
-    </content-loader>
+    <div v-if="status === 'TurnOnLocation'">
+      <div class="alert alert-warning inline" role="alert">
+        Please <strong>Turn on</strong> your location for better experience
+      </div>
+    </div>
+
+    <div v-else>
+      <!-- weather forecast from current upto 7 days  -->
+      <weather-forecast-from-current-day
+        v-if="status === 'success'"
+        :dailyData="weatherData && weatherData.daily.slice(0, 7)"
+      />
+      <!-- The below div will be shown in loading state  -->
+      <ContentLoader
+        v-else-if="status === 'loading'"
+        class="ml-auto mr-auto"
+        :width="400"
+        :height="50"
+        :speed="2"
+        primaryColor="#f3f3f3"
+        secondaryColor="#ecebeb"
+      >
+        <rect x="118" y="06" width="170" height="6" rx="3" />
+        <rect x="118" y="16" width="170" height="6" rx="3" />
+      </ContentLoader>
+
+      <!-- The below code, shows the hourly temprature data -->
+      <div class="d-flex justify-content-center">
+        <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
+          <hourly-temperature
+            v-if="status === 'success'"
+            :hourData="weatherData && weatherData.hourly.slice(0, 24)"
+            :currentData="weatherData && weatherData.current"
+          />
+          <!-- The below div will be shown in loading state -->
+          <ContentLoader
+            v-else-if="status === 'loading'"
+            :width="400"
+            :height="150"
+            :speed="2"
+            primaryColor="#f3f3f3"
+            secondaryColor="#ecebeb"
+          >
+            <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
+            <rect x="86" y="11" rx="3" ry="3" width="7" height="135" />
+            <rect x="88" y="9" rx="3" ry="3" width="231" height="7" />
+            <rect x="87" y="139" rx="3" ry="3" width="230" height="8" />
+            <rect x="104" y="27" rx="0" ry="0" width="42" height="19" />
+            <rect x="314" y="11" rx="0" ry="0" width="7" height="136" />
+            <rect x="103" y="64" rx="0" ry="0" width="202" height="62" />
+          </ContentLoader>
+        </div>
+      </div>
+
+      <pressure-humidity
+        v-if="status === 'success'"
+        :currentData="weatherData && weatherData.current"
+      />
+      <content-loader
+        v-else-if="status === 'loading'"
+        :width="400"
+        :height="160"
+        :speed="2"
+        primaryColor="#f3f3f3"
+        secondaryColor="#ecebeb"
+      >
+        <rect x="200" y="3" rx="0" ry="0" width="49" height="39" />
+        <rect x="140" y="4" rx="0" ry="0" width="52" height="39" />
+      </content-loader>
+    </div>
   </div>
 </template>
 
@@ -126,6 +141,10 @@
 
   .hourly-temperature-container {
     width: 700px;
+  }
+
+  .inline {
+    display: inline-block;
   }
 
   @media screen and (max-width: 800px) {

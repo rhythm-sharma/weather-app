@@ -51,14 +51,15 @@
                 "An error has occured while retrieving" + "location",
                 error_message
               );
-              that.ipLookUp();
+              // that.ipLookUp();
+              that.handleStatus("TurnOnLocation");
             }
           );
         } else {
           // geolocation is not supported
           // get your location some other way
           console.log("geolocation is not enabled on this browser");
-          this.ipLookUp();
+          // this.ipLookUp();
         }
       },
       async ipLookUp(position) {

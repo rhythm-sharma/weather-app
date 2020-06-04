@@ -2,17 +2,34 @@
   <div class="mb-5">
     <div class="bar">
       <form @submit.prevent="handleSubmit()">
-        <input v-model="searchStr" class="searchbar" title="Search" />
+        <img class="mb-1 location-icon" :src="locationIcon" />
+        <input
+          @keyup="resetSuggestedStatusValues"
+          v-model="searchStr"
+          class="searchbar pl-2"
+          title="Search"
+        />
         <i v-if="UserIstyping" class="fas fa-times"></i>
         <i v-else type="submit" class="fas fa-search"></i>
       </form>
     </div>
-    <div
-      v-if="searchStr.length >= 3 && UserIstyping"
-      class="drop-down-container round-corner"
-    >
-      <div v-for="(cityData, index) in suggestedCity" :key="index">
-        <drop-down :cityData="cityData" />
+    <div class="d-flex justify-content-center">
+      <div
+        v-click-outside="hideSuggestions"
+        v-if="
+          searchStr.length >= 3 &&
+            firstLoad === false &&
+            dropDownCitySelected === false
+        "
+        class="position-absolute drop-down-container round-corner"
+      >
+        <div v-for="(cityData, index) in suggestedCity" :key="index">
+          <drop-down
+            @clearSuggestions="clearSuggestions"
+            @selectCityName="selectCityName"
+            :cityData="cityData"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -37,10 +54,14 @@
         baseWeatherAPI: "https://api.openweathermap.org/data/2.5/onecall?",
         cityData: [],
         suggestedCity: [],
+        locationIcon: require("../../assets/location.svg"),
+        firstLoad: true,
+        dropDownCitySelected: false,
       };
     },
 
     mounted() {
+      this.firstLoad = true;
       this.getCityDataFromLocalStorage();
     },
 
@@ -87,6 +108,20 @@
       },
       getCityDataFromLocalStorage() {
         this.cityData = JSON.parse(localStorage.getItem("cityData"));
+      },
+      clearSuggestions() {
+        this.suggestedCity = [];
+      },
+      selectCityName(searchStr) {
+        this.dropDownCitySelected = true;
+        if (searchStr) {
+          this.searchStr = searchStr;
+        }
+        this.clearSuggestions();
+      },
+      resetSuggestedStatusValues() {
+        this.dropDownCitySelected = false;
+        this.firstLoad = false;
       },
     },
 
@@ -144,6 +179,10 @@
 
   .round-corner {
     border-radius: 0.75rem !important;
+  }
+
+  .location-icon {
+    width: 20px;
   }
 
   @media screen and (max-width: 800px) {
