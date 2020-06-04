@@ -73,7 +73,6 @@
           this.handleCityName(geoLocResponse.data.city);
         } catch (error) {
           console.log("Request failed.  Returned status of", error);
-          this.handleStatus("error");
         }
 
         // get the weather response
