@@ -166,6 +166,8 @@
   }
 
   .drop-down-container {
+    overflow: hidden;
+    perspective: 1px;
     margin: 0 auto;
     width: auto;
     max-width: 700px;
