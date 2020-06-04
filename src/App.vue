@@ -6,6 +6,7 @@
 
 <script>
   import ComponentContainer from "./components/ComponentContainer.vue";
+  import cityData from "../utils/data.json";
   import { mapActions, mapGetters } from "vuex";
 
   export default {
@@ -27,6 +28,7 @@
     },
 
     mounted() {
+      localStorage.setItem("cityData", JSON.stringify(cityData));
       this.getGeoLocation();
     },
 

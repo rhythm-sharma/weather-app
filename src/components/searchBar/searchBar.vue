@@ -1,18 +1,33 @@
 <template>
-  <div class="bar mb-5">
-    <form @submit.prevent="handleSubmit()">
-      <input v-model="searchStr" class="searchbar" title="Search" />
-      <i v-if="UserIstyping" class="fas fa-times"></i>
-      <i v-else type="submit" class="fas fa-search"></i>
-    </form>
+  <div class="mb-5">
+    <div class="bar">
+      <form @submit.prevent="handleSubmit()">
+        <input v-model="searchStr" class="searchbar" title="Search" />
+        <i v-if="UserIstyping" class="fas fa-times"></i>
+        <i v-else type="submit" class="fas fa-search"></i>
+      </form>
+    </div>
+    <div
+      v-if="searchStr.length >= 3 && UserIstyping"
+      class="drop-down-container round-corner"
+    >
+      <div v-for="(cityData, index) in suggestedCity" :key="index">
+        <drop-down :cityData="cityData" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from "vuex";
+  import DropDown from "./dropDown/dropDown";
 
   export default {
     name: "SearchBar",
+
+    components: {
+      DropDown,
+    },
 
     data() {
       return {
@@ -20,7 +35,13 @@
         searchStr: "",
         baseLatLonAPI: "https://api.openweathermap.org/data/2.5/weather?",
         baseWeatherAPI: "https://api.openweathermap.org/data/2.5/onecall?",
+        cityData: [],
+        suggestedCity: [],
       };
+    },
+
+    mounted() {
+      this.getCityDataFromLocalStorage();
     },
 
     computed: {
@@ -64,6 +85,9 @@
           this.handleStatus("error");
         }
       },
+      getCityDataFromLocalStorage() {
+        this.cityData = JSON.parse(localStorage.getItem("cityData"));
+      },
     },
 
     watch: {
@@ -71,6 +95,18 @@
         console.log(value, oldValue);
         if (value !== oldValue) {
           this.searchStr = value;
+        }
+      },
+      searchStr(value) {
+        if (value.length >= 3) {
+          let results = this.cityData.filter((cityObj) => {
+            return (
+              cityObj.city.findname
+                .toLowerCase()
+                .indexOf(value.toLowerCase()) >= 0
+            );
+          });
+          this.suggestedCity = results.slice(0, 3);
         }
       },
     },
@@ -98,15 +134,21 @@
     font-size: 16px;
     outline: none;
   }
-  .voice {
-    height: 20px;
-    position: relative;
-    top: 5px;
-    left: 10px;
+
+  .drop-down-container {
+    margin: 0 auto;
+    width: auto;
+    max-width: 700px;
+    box-shadow: 1px 1px 8px 1px #dcdcdc;
+  }
+
+  .round-corner {
+    border-radius: 0.75rem !important;
   }
 
   @media screen and (max-width: 800px) {
-    .bar {
+    .bar,
+    .drop-down-container {
       width: 95vw;
     }
     .searchbar {
