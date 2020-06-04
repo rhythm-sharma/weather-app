@@ -56,14 +56,14 @@
     />
     <content-loader
       v-else-if="status === 'loading'"
-      width="{400}"
-      height="{160}"
-      speed="{2}"
+      :width="400"
+      :height="160"
+      :speed="2"
       primaryColor="#f3f3f3"
       secondaryColor="#ecebeb"
     >
-      <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
-      <rect x="207" y="10" rx="0" ry="0" width="180" height="144" />
+      <rect x="200" y="3" rx="0" ry="0" width="49" height="39" />
+      <rect x="140" y="4" rx="0" ry="0" width="52" height="39" />
     </content-loader>
   </div>
 </template>
