@@ -1,17 +1,16 @@
 <template>
   <div class="component-container">
-    <h1 class="mb-5">
-      Welcome to
-      <img class="logo" alt="logo" src="../assets/Richpanel.png" /> Richpanel
-      weather app
-    </h1>
+    <!-- Search Bar -->
     <search-bar />
+
+    <!-- weather forecast from current upto 7 days  -->
     <weather-forecast-from-current-day
-      v-if="weatherData && weatherData.daily"
-      :dailyData="weatherData && weatherData.daily.slice(0, 7)"
+      v-if="status === 'success'"
+      :dailyData="weatherData && weatherData.daily.slice(0.7)"
     />
+    <!-- The below div will be shown in loading state  -->
     <ContentLoader
-      v-else
+      v-else-if="status === 'loading'"
       class="ml-auto mr-auto"
       :width="400"
       :height="50"
@@ -22,15 +21,50 @@
       <rect x="118" y="06" width="170" height="6" rx="3" />
       <rect x="118" y="16" width="170" height="6" rx="3" />
     </ContentLoader>
+
+    <!-- The below code, shows the hourly temprature data -->
     <div class="d-flex justify-content-center">
       <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
         <hourly-temperature
-          :hourData="weatherData && weatherData.hourly.slice(0, 24)"
+          v-if="status === 'success'"
+          :hourData="weatherData && weatherData.hourly.slice(0.24)"
           :currentData="weatherData && weatherData.current"
         />
+        <!-- The below div will be shown in loading state -->
+        <ContentLoader
+          v-else-if="status === 'loading'"
+          :width="400"
+          :height="150"
+          :speed="2"
+          primaryColor="#f3f3f3"
+          secondaryColor="#ecebeb"
+        >
+          <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
+          <rect x="86" y="11" rx="3" ry="3" width="7" height="135" />
+          <rect x="88" y="9" rx="3" ry="3" width="231" height="7" />
+          <rect x="87" y="139" rx="3" ry="3" width="230" height="8" />
+          <rect x="104" y="27" rx="0" ry="0" width="42" height="19" />
+          <rect x="314" y="11" rx="0" ry="0" width="7" height="136" />
+          <rect x="103" y="64" rx="0" ry="0" width="202" height="62" />
+        </ContentLoader>
       </div>
     </div>
-    <pressure-humidity :currentData="weatherData && weatherData.current" />
+
+    <pressure-humidity
+      v-if="status === 'success'"
+      :currentData="weatherData && weatherData.current"
+    />
+    <content-loader
+      v-else-if="status === 'loading'"
+      width="{400}"
+      height="{160}"
+      speed="{2}"
+      primaryColor="#f3f3f3"
+      secondaryColor="#ecebeb"
+    >
+      <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
+      <rect x="207" y="10" rx="0" ry="0" width="180" height="144" />
+    </content-loader>
   </div>
 </template>
 
@@ -47,6 +81,10 @@
       weatherData: {
         type: Object,
         default: () => {},
+      },
+      status: {
+        type: String,
+        default: "",
       },
     },
     components: {

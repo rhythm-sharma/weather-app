@@ -16,24 +16,12 @@
             {{ item.value }} %
           </p>
         </div>
-        <ContentLoader
-          v-else
-          :width="400"
-          :height="150"
-          :speed="2"
-          primaryColor="#f3f3f3"
-          secondaryColor="#ecebeb"
-        >
-          <rect x="8" y="8" rx="3" ry="3" width="108" height="16" />
-        </ContentLoader>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { ContentLoader } from "vue-content-loader";
-
   export default {
     name: "pressureHumidity",
 
@@ -43,11 +31,6 @@
         required: true,
       },
     },
-
-    components: {
-      ContentLoader,
-    },
-
     data() {
       return {
         Values: [

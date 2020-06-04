@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ComponentContainer :weatherData="weatherData" />
+    <ComponentContainer :status="status" :weatherData="weatherData" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@
         lon: "",
         appId: "3e235f332dbb113f10b747e66f2a40da",
         weatherData: {},
+        status: "",
       };
     },
 
@@ -29,6 +30,7 @@
 
     methods: {
       getGeoLocation() {
+        this.status = "loading";
         const that = this;
         if ("geolocation" in navigator) {
           // check if geolocation is supported/enabled on current browser
@@ -72,6 +74,7 @@
             weatherResponse = await this.$http.get(
               `${this.baseUrl}lat=${geoLocResponse.data.lat}&lon=${geoLocResponse.data.lon}&appid=${this.appId}`
             );
+            this.status = "success";
             console.log("weatherResponse: ", weatherResponse);
             this.weatherData = weatherResponse.data;
           } else if (position) {
@@ -80,9 +83,11 @@
             );
             console.log("weatherResponse: ", weatherResponse);
             this.weatherData = weatherResponse.data;
+            this.status = "success";
           }
         } catch (error) {
           console.log("Request failed.  Returned status of", error);
+          this.status = "error";
         }
       },
     },
