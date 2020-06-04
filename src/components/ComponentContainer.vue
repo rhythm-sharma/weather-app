@@ -1,9 +1,7 @@
 <template>
   <div class="component-container">
-    <!-- Search Bar -->
-    <search-bar />
-
     <div v-if="status === 'error'">
+      <dummy-search-bar />
       <div class="alert alert-danger inline" role="alert">
         <strong>Oh snap!</strong> Something went wrong, Please try again after
         some time
@@ -11,12 +9,16 @@
     </div>
 
     <div v-if="status === 'TurnOnLocation'">
+      <dummy-search-bar />
       <div class="alert alert-warning inline" role="alert">
         Please <strong>Turn on</strong> your location for better experience
       </div>
     </div>
 
     <div v-else>
+      <!-- Search Bar -->
+      <search-bar />
+
       <!-- weather forecast from current upto 7 days  -->
       <weather-forecast-from-current-day
         v-if="status === 'success'"
@@ -85,6 +87,7 @@
 
 <script>
   import SearchBar from "../components/searchBar/searchBar";
+  import DummySearchBar from "../components/dummySearchBar/dummySearchBar";
   import weatherForecastFromCurrentDay from "../components/weatherForecastFromCurrentDay/weatherForecastFromCurrentDay";
   import hourlyTemperature from "../components/hourlyTemperature/hourlyTemperature";
   import pressureHumidity from "../components/pressureHumidity/pressureHumidity";
@@ -105,6 +108,7 @@
       hourlyTemperature,
       pressureHumidity,
       ContentLoader,
+      DummySearchBar,
     },
 
     computed: {
