@@ -40,15 +40,18 @@
 
       <!-- The below code, shows the hourly temprature data -->
       <div class="d-flex justify-content-center">
-        <div class="hourly-temperature-container  p-3 mb-5 bg-white w-75">
+        <div
+          v-if="status === 'success'"
+          class="hourly-temperature-container p-3 mb-5 bg-white w-75"
+        >
           <hourly-temperature
-            v-if="status === 'success'"
             :hourData="weatherData && weatherData.hourly.slice(0, 24)"
             :currentData="weatherData && weatherData.current"
           />
-          <!-- The below div will be shown in loading state -->
+        </div>
+        <!-- The below div will be shown in loading state -->
+        <div v-else-if="status === 'loading'" class="w-75 mb-5">
           <ContentLoader
-            v-else-if="status === 'loading'"
             :width="400"
             :height="150"
             :speed="2"
