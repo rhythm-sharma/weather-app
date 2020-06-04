@@ -8,6 +8,7 @@
           v-model="searchStr"
           class="searchbar pl-2"
           title="Search"
+          placeholder="Search weather"
         />
         <i v-if="UserIstyping" class="fas fa-times"></i>
         <i v-else type="submit" @click="handleSubmit" class="fas fa-search"></i>
