@@ -126,8 +126,8 @@
     cursor: pointer;
     height: 45px;
     border: none;
-    width: 650px;
-    max-width: 650px;
+    width: 600px;
+    max-width: 600px;
     font-size: 16px;
     outline: none;
   }
