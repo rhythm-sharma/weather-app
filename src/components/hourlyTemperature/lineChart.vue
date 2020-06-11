@@ -1,11 +1,6 @@
 <template>
   <div style="overflow: scroll;">
-    <canvas
-      class="canvas pb-3"
-      ref="myChart"
-      :width="width"
-      :height="height"
-    ></canvas>
+    <canvas class="canvas pb-3" ref="myChart"></canvas>
   </div>
 </template>
 
@@ -86,5 +81,13 @@
 <style scoped>
   .canvas {
     overflow: scroll;
+    width: 700px;
+    height: 300px;
+  }
+  @media screen and (max-width: 700px) {
+    .canvas {
+      width: 100% !important;
+      height: 260px !important;
+    }
   }
 </style>

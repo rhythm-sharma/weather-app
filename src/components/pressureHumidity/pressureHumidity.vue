@@ -8,7 +8,7 @@
         :class="{ 'mr-4': index === 0 }"
       >
         <div v-if="item.value && item.name">
-          <h4 class="">{{ item.name }}</h4>
+          <h5 class="font-weight-bold">{{ item.name }}</h5>
           <p v-if="item.value && item.name === 'Pressure'" class="">
             {{ item.value }} hpa
           </p>
@@ -30,6 +30,13 @@
         type: Object,
         required: true,
       },
+      selectedIndex: {
+        default: null,
+      },
+      dailyData: {
+        type: Array,
+        default: () => [],
+      },
     },
     data() {
       return {
@@ -49,6 +56,10 @@
       currentData(newCurrentData) {
         this.Values[0].value = newCurrentData.pressure;
         this.Values[1].value = newCurrentData.humidity;
+      },
+      selectedIndex(newVal) {
+        this.Values[0].value = this.dailyData[newVal].pressure;
+        this.Values[1].value = this.dailyData[newVal].humidity;
       },
     },
   };

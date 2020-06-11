@@ -9,14 +9,13 @@
               ? currentData.feels_like
               : dailyData[this.selectedIndex].temp.max
           )
-        }}
-        °C</span
+        }}°C</span
       >
       <img
         :src="
           getWeatherImage(
             this.selectedIndex === null
-              ? currentData.feels_like
+              ? currentData.weather[0].icon
               : dailyData[this.selectedIndex].weather[0].icon
           )
         "
@@ -187,7 +186,6 @@
 <style scoped>
   .temp-card {
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-    /* background: black; */
     position: relative;
     width: auto;
     max-width: 700px;
@@ -196,7 +194,7 @@
   }
 
   .lead {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 900;
   }
 
@@ -208,7 +206,7 @@
   }
 
   .temp-card .about {
-    height: 185px;
+    height: 150px;
     padding: 20px;
     box-sizing: border-box;
   }
@@ -315,12 +313,22 @@
   }
 
   .w-15 {
-    width: 15% !important;
+    width: 4rem !important;
   }
 
   @media screen and (max-width: 700px) {
     .temp-card {
       width: 90vw;
+    }
+    .lead {
+      font-size: 2.5rem;
+      font-weight: 900;
+    }
+    .w-15 {
+      width: 3.5rem !important;
+    }
+    .temp-card .about {
+      height: 100px;
     }
   }
 </style>

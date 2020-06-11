@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5">
+  <div class="bar-container mb-5">
     <div class="bar">
       <form @submit.prevent="handleSubmit()">
         <img class="mb-1 location-icon" :src="locationIcon" />
@@ -197,6 +197,12 @@
     }
     .searchbar {
       width: 85vw;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .bar-container {
+      margin-bottom: 1rem !important;
     }
   }
 

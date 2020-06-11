@@ -175,6 +175,7 @@
     .main-weather-forcast-container {
       max-width: 95vw;
       overflow: scroll;
+      margin-bottom: 1rem !important;
     }
   }
 </style>
