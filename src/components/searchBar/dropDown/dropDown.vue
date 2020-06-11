@@ -1,25 +1,25 @@
 <template>
   <div class="bg-white" @click="setWeatherData">
     <div class="drop-down border-bottom d-flex flex-row">
-      <div class="drop-down-bar text-left mt-3 ml-3 font-weight-bolder">
-        {{ cityData.city.findname }}
-      </div>
+      <div
+        class="drop-down-bar text-left mt-3 ml-3"
+        v-html="highLighter(cityData.city.findname)"
+      ></div>
       <div
         v-if="suggestedCityWeatherStatus === 'success' && suggestedCityWeather"
-        class=""
+        class="ml-auto temp-info-container"
       >
-        <div class="d-flex flex-row m-1">
+        <div class="d-flex flex-row justify-content-end m-1">
           <div class="">
-            <div class="temp font-weight-bold" :aria-label="`x`">
+            <span class="temp font-weight-bold" :aria-label="`x`">
               {{
-                tempratureToDegree(
-                  suggestedCityWeather.data.current.feels_like
-                )
-              }}<span>&#176;</span>
-            </div>
-            <span class="weather-type">
-              {{ suggestedCityWeather.data.current.weather[0].main }}
+                tempratureToDegree(suggestedCityWeather.data.current.feels_like)
+              }}
+              °C
             </span>
+            <div class="weather-type">
+              {{ suggestedCityWeather.data.current.weather[0].main }}
+            </div>
           </div>
           <div class="">
             <img
@@ -33,17 +33,21 @@
           </div>
         </div>
       </div>
-      <content-loader
+      <div
         v-else-if="suggestedCityWeatherStatus === 'loading'"
-        :width="400"
-        :height="160"
-        :speed="2"
-        primaryColor="#f3f3f3"
-        secondaryColor="#ecebeb"
+        class="temp-info-container"
       >
-        <rect x="15" y="8" rx="3" ry="3" width="88" height="6" />
-        <rect x="14" y="23" rx="3" ry="3" width="88" height="6" />
-      </content-loader>
+        <content-loader
+          :width="400"
+          :height="160"
+          :speed="2"
+          primaryColor="#f3f3f3"
+          secondaryColor="#ecebeb"
+        >
+          <rect x="183" y="81" rx="3" ry="3" width="126" height="28" />
+          <rect x="182" y="41" rx="3" ry="3" width="128" height="28" />
+        </content-loader>
+      </div>
     </div>
   </div>
 </template>
@@ -60,6 +64,10 @@
       cityData: {
         type: Object,
         default: () => {},
+      },
+      searchStr: {
+        type: String,
+        default: "",
       },
     },
 
@@ -84,7 +92,12 @@
     },
 
     methods: {
-      ...mapActions(["handleStatus", "handleWeatherData", "handleCityName"]),
+      ...mapActions([
+        "handleStatus",
+        "handleWeatherData",
+        "handleCityName",
+        "handleSuggestedCityGlobally",
+      ]),
       getWeatherImage,
       tempratureToDegree,
       async getCurrentWeather() {
@@ -102,11 +115,34 @@
         }
       },
       setWeatherData() {
-        this.$emit("selectCityName", this.cityData.city.findname);
-        this.handleStatus("loading");
-        this.handleWeatherData(this.suggestedCityWeather.data);
-        this.handleStatus("success");
-        this.$emit("clearSuggestions");
+        // this will run if suggestedCityWeatherStatus is loading
+        if (this.suggestedCityWeatherStatus === "loading") {
+          this.handleSuggestedCityGlobally({
+            coord: this.cityData.city.coord,
+            that: this,
+            cityName: this.cityData.city.findname,
+          });
+          // this.$emit("selectCityName", this.cityData.city.findname);
+
+          // this.$emit("clearSuggestions");
+        } else if (this.suggestedCityWeatherStatus === "success") {
+          // this will run if suggestedCityWeatherStatus is success
+          this.$emit("selectCityName", this.cityData.city.findname);
+          this.handleStatus("loading");
+          this.handleWeatherData(this.suggestedCityWeather.data);
+          this.handleStatus("success");
+          this.$emit("clearSuggestions");
+        } else if (this.suggestedCityWeatherStatus === "error") {
+          this.handleStatus("error");
+        }
+      },
+      highLighter(cityName) {
+        let capitalizeCityName = cityName.toLowerCase();
+        capitalizeCityName =
+          capitalizeCityName[0].toUpperCase() + capitalizeCityName.slice(1);
+        const searchStr = JSON.parse(JSON.stringify(this.searchStr));
+        const reg = new RegExp(searchStr, "gi");
+        return capitalizeCityName.replace(reg, (str) => "<b>" + str + "</b>");
       },
     },
   };
@@ -124,12 +160,12 @@
   }
   .drop-down-bar {
     cursor: pointer;
-    height: 45px;
     border: none;
     width: 600px;
     max-width: 600px;
     font-size: 16px;
     outline: none;
+    font-weight: 500;
   }
 
   .weather-icon {
@@ -140,13 +176,18 @@
   .weather-type {
     font-weight: normal;
     line-height: 15px;
-    font-size: 13px;
-    font-weight: 600;
-    color: darkgray;
+    font-size: 11px;
+    font-weight: 500;
+    color: #696969;
+    margin-top: -5px;
   }
 
   .temp {
     font-size: 14px;
+  }
+
+  .temp-info-container {
+    width: 120px;
   }
 
   @media screen and (max-width: 800px) {
@@ -155,6 +196,9 @@
     }
     .drop-down-bar {
       width: 85vw;
+    }
+    .temp-info-container {
+      width: 130px;
     }
   }
 </style>

@@ -6,7 +6,7 @@
         <input
           @keyup="resetSuggestedStatusValues"
           v-model="searchStr"
-          class="searchbar pl-2"
+          class="searchbar pl-2 font-weight-bold"
           title="Search"
           placeholder="Search weather"
         />
@@ -27,8 +27,9 @@
         <div v-for="(cityData, index) in suggestedCity" :key="index">
           <drop-down
             @clearSuggestions="clearSuggestions"
-            @selectCityName="selectCityName"
+            @selectCityName="(str) => selectCityName(str)"
             :cityData="cityData"
+            :searchStr="searchStr"
           />
         </div>
       </div>
@@ -156,12 +157,14 @@
   .bar:focus-within {
     box-shadow: 1px 1px 8px 1px #dcdcdc;
     outline: none;
+    border-color: #1973e8;
   }
+
   .searchbar {
     height: 45px;
     border: none;
-    width: 600px;
-    max-width: 600px;
+    width: 620px;
+    max-width: 620px;
     font-size: 16px;
     outline: none;
   }
@@ -181,6 +184,10 @@
 
   .location-icon {
     width: 20px;
+  }
+
+  .fa-search {
+    -webkit-appearance: none;
   }
 
   @media screen and (max-width: 800px) {

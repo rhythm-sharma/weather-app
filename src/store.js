@@ -48,5 +48,21 @@ export const store = new Vuex.Store({
     handleCityName: ({ commit }, name) => {
       commit("changeCityName", name);
     },
+    handleSuggestedCityGlobally: async ({ state, dispatch }, params) => {
+      let SuggestedCityWeatherResponse = [];
+      const baseUrl = "https://api.openweathermap.org/data/2.5/onecall?";
+      dispatch("handleStatus", "loading");
+      try {
+        SuggestedCityWeatherResponse = await params.that.$http.get(
+          `${baseUrl}lat=${params.coord.lat}&lon=${params.coord.lon}&appid=${state.appId}`
+        );
+        dispatch("handleWeatherData", SuggestedCityWeatherResponse.data);
+        dispatch("handleStatus", "success");
+        dispatch("handleCityName", params.cityName);
+      } catch (error) {
+        dispatch("handleStatus", "error");
+        console.log("Request failed.  Returned status of", error);
+      }
+    },
   },
 });

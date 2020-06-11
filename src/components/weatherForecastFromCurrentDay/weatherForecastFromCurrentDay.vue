@@ -6,12 +6,16 @@
         :key="index"
         class="weather-forcast-container m-2"
       >
-        <div class="day-name" style="" :aria-label="days[index]">
+        <div
+          class="day-name font-weight-bold"
+          style=""
+          :aria-label="days[index]"
+        >
           {{ days[index] }}
         </div>
         <div class="temperature">
           <div class="temp-max">
-            <span class="temp-text">{{
+            <span class="temp-text font-weight-bold">{{
               tempratureToDegree(item.temp.max)
             }}</span>
             <span>&#176;</span>

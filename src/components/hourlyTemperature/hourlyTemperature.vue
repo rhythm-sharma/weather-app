@@ -21,45 +21,6 @@
       :datasets="datasets"
       :options="$options.options"
     ></line-chart>
-
-    <!-- Custom Axis -->
-    <!-- <div class="axis">
-      <div class="tick">
-        <span class="day-number">10</span>
-        <span class="day-name">MON</span>
-        <span class="value value--this">26°C</span>
-      </div>
-      <div class="tick">
-        <span class="day-number">11</span>
-        <span class="day-name">TUE</span>
-        <span class="value value--this">14°C</span>
-      </div>
-      <div class="tick">
-        <span class="day-number">12</span>
-        <span class="day-name">WED</span>
-        <span class="value value--this">22°C</span>
-      </div>
-      <div class="tick">
-        <span class="day-number">13</span>
-        <span class="day-name">THU</span>
-        <span class="value value--this">12°C</span>
-      </div>
-      <div class="tick">
-        <span class="day-number">14</span>
-        <span class="day-name">FRI</span>
-        <span class="value value--this">20°C</span>
-      </div>
-      <div class="tick">
-        <span class="day-number">15</span>
-        <span class="day-name">SAT</span>
-        <span class="value value--this">12°C</span>
-      </div>
-      <div class="tick">
-        <span class="day-number">16</span>
-        <span class="day-name">SUN</span>
-        <span class="value value--this">18°C</span>
-      </div>
-    </div> -->
   </div>
 </template>
 
