@@ -1,5 +1,5 @@
 <template>
-  <div class="temp-card ml-auto mr-auto">
+  <div class="ml-auto mr-auto">
     <!-- Custom information -->
     <div v-if="currentData" class="about text-left">
       <span class="lead"

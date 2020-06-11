@@ -44,59 +44,61 @@
         <rect x="118" y="16" width="170" height="6" rx="3" />
       </ContentLoader>
 
-      <!-- The below code, shows the hourly temprature data -->
-      <div class="d-flex justify-content-center">
-        <div
-          v-if="status === 'success'"
-          class="hourly-temperature-container p-3 mb-5 bg-white w-75"
-        >
-          <hourly-temperature
-            :hourData="weatherData && weatherData.hourly.slice(start, end)"
-            :fullHourData="weatherData && weatherData.hourly"
-            :currentData="weatherData && weatherData.current"
-            :start="start"
-            :end="end"
-            :selectedIndex="selectedIndex"
-            :dailyData="weatherData && weatherData.daily.slice(0, 7)"
-          />
-        </div>
-        <!-- The below div will be shown in loading state -->
-        <div v-else-if="status === 'loading'" class="w-75 mb-5">
-          <ContentLoader
-            :width="400"
-            :height="150"
-            :speed="2"
-            primaryColor="#f3f3f3"
-            secondaryColor="#ecebeb"
+      <div :class="{ 'temp-card ml-auto mr-auto mb-4': status === 'success' }">
+        <!-- The below code, shows the hourly temprature data -->
+        <div class="d-flex justify-content-center">
+          <div
+            v-if="status === 'success'"
+            class="hourly-temperature-container p-3 mb-5 bg-white"
           >
-            <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
-            <rect x="86" y="11" rx="3" ry="3" width="7" height="135" />
-            <rect x="88" y="9" rx="3" ry="3" width="231" height="7" />
-            <rect x="87" y="139" rx="3" ry="3" width="230" height="8" />
-            <rect x="104" y="27" rx="0" ry="0" width="42" height="19" />
-            <rect x="314" y="11" rx="0" ry="0" width="7" height="136" />
-            <rect x="103" y="64" rx="0" ry="0" width="202" height="62" />
-          </ContentLoader>
+            <hourly-temperature
+              :hourData="weatherData && weatherData.hourly.slice(start, end)"
+              :fullHourData="weatherData && weatherData.hourly"
+              :currentData="weatherData && weatherData.current"
+              :start="start"
+              :end="end"
+              :selectedIndex="selectedIndex"
+              :dailyData="weatherData && weatherData.daily.slice(0, 7)"
+            />
+          </div>
+          <!-- The below div will be shown in loading state -->
+          <div v-else-if="status === 'loading'" class="w-75 mb-5">
+            <ContentLoader
+              :width="400"
+              :height="150"
+              :speed="2"
+              primaryColor="#f3f3f3"
+              secondaryColor="#ecebeb"
+            >
+              <rect x="444" y="36" rx="3" ry="3" width="6" height="69" />
+              <rect x="86" y="11" rx="3" ry="3" width="7" height="135" />
+              <rect x="88" y="9" rx="3" ry="3" width="231" height="7" />
+              <rect x="87" y="139" rx="3" ry="3" width="230" height="8" />
+              <rect x="104" y="27" rx="0" ry="0" width="42" height="19" />
+              <rect x="314" y="11" rx="0" ry="0" width="7" height="136" />
+              <rect x="103" y="64" rx="0" ry="0" width="202" height="62" />
+            </ContentLoader>
+          </div>
         </div>
-      </div>
 
-      <pressure-humidity
-        v-if="status === 'success'"
-        :currentData="weatherData && weatherData.current"
-        :selectedIndex="selectedIndex"
-        :dailyData="weatherData && weatherData.daily.slice(0, 7)"
-      />
-      <content-loader
-        v-else-if="status === 'loading'"
-        :width="400"
-        :height="160"
-        :speed="2"
-        primaryColor="#f3f3f3"
-        secondaryColor="#ecebeb"
-      >
-        <rect x="200" y="3" rx="0" ry="0" width="49" height="39" />
-        <rect x="140" y="4" rx="0" ry="0" width="52" height="39" />
-      </content-loader>
+        <pressure-humidity
+          v-if="status === 'success'"
+          :currentData="weatherData && weatherData.current"
+          :selectedIndex="selectedIndex"
+          :dailyData="weatherData && weatherData.daily.slice(0, 7)"
+        />
+        <content-loader
+          v-else-if="status === 'loading'"
+          :width="400"
+          :height="160"
+          :speed="2"
+          primaryColor="#f3f3f3"
+          secondaryColor="#ecebeb"
+        >
+          <rect x="200" y="3" rx="0" ry="0" width="49" height="39" />
+          <rect x="140" y="4" rx="0" ry="0" width="52" height="39" />
+        </content-loader>
+      </div>
     </div>
   </div>
 </template>
@@ -201,9 +203,63 @@
     display: inline-block;
   }
 
+  .temp-card {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: auto;
+    max-width: 700px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* hide limit values on X axis */
+  .temp-card #canvas {
+    margin-left: -30px;
+    margin-right: -30px;
+    width: 360px !important;
+  }
+
+  .temp-card .about {
+    height: 150px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .temp-card .about h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 400;
+  }
+
+  .temp-card .about h3 {
+    font-size: 24px;
+    /* color: #fff; */
+  }
+
+  .temp-card .info {
+    float: left;
+    padding: 10px 30px 10px 0;
+  }
+
+  .temp-card .info p {
+    font-size: 11px;
+    /* color: #aaa; */
+    font-weight: 300;
+  }
+
   @media screen and (max-width: 800px) {
     .hourly-temperature-container {
       width: auto !important;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .temp-card {
+      width: 90vw;
+    }
+
+    .temp-card .about {
+      height: 100px;
     }
   }
 </style>
