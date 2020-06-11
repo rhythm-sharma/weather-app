@@ -4,7 +4,14 @@
       <div
         v-for="(item, index) in dailyData"
         :key="index"
-        class="weather-forcast-container m-2"
+        :ref="index"
+        class="weather-forcast-container m-2 py-1"
+        @click="
+          () => {
+            addBorders(index, dailyData.length);
+            handleHourlyDataOnSelectedCard(index);
+          }
+        "
       >
         <div
           class="day-name font-weight-bold"
@@ -61,6 +68,7 @@
     },
 
     mounted() {
+      // this.addBorders(0, this.dailyData.length);
       this.forCastData = this.dailyData;
       this.forCastData = this.forCastData.slice(0, -1);
 
@@ -71,7 +79,7 @@
       let newDays = [];
 
       today = new Date();
-      index = today.getDay();
+      index = today.getDay() + 1;
 
       a1 = this.days.slice(0, index);
       a2 = this.days.slice(index);
@@ -93,26 +101,34 @@
     methods: {
       tempratureToDegree,
       getWeatherImage,
+      addBorders(idx, len) {
+        for (let index = 0; index < len; index++) {
+          this.$refs[index][0].classList.remove("blue-border");
+        }
+        this.$refs[idx][0].classList.add("blue-border");
+      },
+      handleHourlyDataOnSelectedCard(index) {
+        this.$emit("handleHourlyDataOnSelectedCard", index);
+      },
     },
   };
 </script>
 
 <style scoped>
-  /* .weather-forcast-container:hover {
-    background-color: #fcfcfc;
-    border: 1px solid #e9e9e9;
-    border-radius: 1px;
-    margin: 0;
-  } */
-
   .weather-forcast-container {
     display: inline-block;
     line-height: 1;
     text-align: center;
-    transition-duration: 200ms, 200ms, 200ms;
-    transition-property: background-image, border, font-weight;
+    /* transition-duration: 50ms, 50ms, 50ms; */
+    /* transition-property: background-image, border, font-weight; */
     font-weight: 13px;
     width: 73px;
+  }
+
+  .blue-border {
+    border-style: solid;
+    border-color: #59bbff;
+    border-width: 2px;
   }
 
   .day-name {
@@ -138,7 +154,7 @@
   }
 
   .weather-type {
-    font-weight: 600;
+    font-weight: 500;
     color: darkgray;
   }
 

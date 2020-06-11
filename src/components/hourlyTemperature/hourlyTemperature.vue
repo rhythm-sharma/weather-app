@@ -3,10 +3,23 @@
     <!-- Custom information -->
     <div v-if="currentData" class="about text-left">
       <span class="lead"
-        >{{ tempratureToDegree(currentData.feels_like) }} °C</span
+        >{{
+          tempratureToDegree(
+            this.selectedIndex === null
+              ? currentData.feels_like
+              : dailyData[this.selectedIndex].temp.max
+          )
+        }}
+        °C</span
       >
       <img
-        :src="getWeatherImage(currentData.weather[0].icon)"
+        :src="
+          getWeatherImage(
+            this.selectedIndex === null
+              ? currentData.feels_like
+              : dailyData[this.selectedIndex].weather[0].icon
+          )
+        "
         alt=""
         class="ml-3 mb-4 w-15"
       />
@@ -15,7 +28,7 @@
     <!-- Canvas -->
     <line-chart
       v-if="datasets && labels"
-      :width="900"
+      :width="700"
       :height="300"
       :labels="labels"
       :datasets="datasets"
@@ -38,6 +51,12 @@
       xAxes: [
         {
           display: true,
+          ticks: {
+            autoSkip: true,
+            fontStyle: "bold",
+            fontColor: "black",
+            fontSize: 14,
+          },
         },
       ],
       yAxes: [
@@ -45,6 +64,7 @@
           display: false,
           ticks: {
             beginAtZero: true,
+            padding: 100,
           },
         },
       ],
@@ -77,6 +97,23 @@
         type: Object,
         default: () => {},
       },
+      fullHourData: {
+        type: Array,
+        default: () => [],
+      },
+      start: {
+        type: Number,
+      },
+      end: {
+        type: Number,
+      },
+      selectedIndex: {
+        default: null,
+      },
+      dailyData: {
+        type: Array,
+        default: () => [],
+      },
     },
 
     data() {
@@ -88,49 +125,60 @@
     },
 
     mounted() {
-      let hourlyTemprature = [];
-
-      this.hourData.forEach((item) => {
-        hourlyTemprature.push(tempratureToDegree(item.temp));
-      });
-
-      console.log("hourlyTemprature", hourlyTemprature);
-
-      this.datasets = [
-        {
-          label: "Temperature",
-          data: hourlyTemprature,
-          fill: false,
-          borderColor: "rgba(66, 133, 244, 0.2)",
-          borderWidth: 3,
-          pointBackgroundColor: "transparent",
-          pointBorderColor: "#4285f4",
-          pointBorderWidth: 3,
-          pointHoverBorderColor: "rgba(66, 133, 244, 0.2)",
-          pointHoverBorderWidth: 10,
-          lineTension: 0,
-        },
-      ];
-
-      let tempLabels = [];
-      const date = new Date();
-
-      this.hourData.forEach((item, index) => {
-        tempLabels.push(this.formatAMPM(date.getHours() + index));
-      });
-
-      this.labels = tempLabels;
+      this.handleDataSets(this.hourData);
+      this.handleLabels();
     },
 
     methods: {
       tempratureToDegree,
       getWeatherImage,
-      formatAMPM(hours) {
+      handleDataSets(hourData) {
+        let hourlyTemprature = [];
+
+        hourData.forEach((item) => {
+          hourlyTemprature.push(tempratureToDegree(item.temp));
+        });
+
+        console.log("hourlyTemprature", hourlyTemprature);
+
+        this.datasets = [
+          {
+            label: "Temperature",
+            data: hourlyTemprature,
+            fill: false,
+            borderColor: "rgba(66, 133, 244, 0.2)",
+            borderWidth: 3,
+            pointBackgroundColor: "transparent",
+            pointBorderColor: "#4285f4",
+            pointBorderWidth: 3,
+            pointHoverBorderColor: "rgba(66, 133, 244, 0.2)",
+            pointHoverBorderWidth: 10,
+            lineTension: 0,
+          },
+        ];
+      },
+      handleLabels() {
+        let tempLabels = [];
+        const date = new Date();
+        this.fullHourData.forEach((item, index) => {
+          tempLabels.push(this.formatAMPM(date.getHours() + index));
+        });
+        this.labels = tempLabels.slice(this.start, this.end);
+      },
+      formatAMPM(hours, toInt = false) {
         const ampm = hours >= 12 ? "pm" : "am";
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
-        const strTime = hours + ampm;
+        const strTime = toInt ? hours : hours + ampm;
         return strTime;
+      },
+    },
+    watch: {
+      hourData(newVal) {
+        this.handleDataSets(newVal);
+      },
+      start() {
+        this.handleLabels();
       },
     },
   };

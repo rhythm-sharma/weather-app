@@ -1,5 +1,6 @@
 <template>
   <div class="component-container">
+    <!-- Shown, in case when endpoint response with error  -->
     <div v-if="status === 'error'">
       <dummy-search-bar />
       <div class="alert alert-danger inline" role="alert">
@@ -8,6 +9,7 @@
       </div>
     </div>
 
+    <!-- Shown, in case User didn't alowed for location -->
     <div v-if="status === 'TurnOnLocation'">
       <dummy-search-bar />
       <div class="alert alert-warning inline" role="alert">
@@ -15,6 +17,7 @@
       </div>
     </div>
 
+    <!-- Shown, in case when endpoint response is either loading or success -->
     <div v-else>
       <!-- Search Bar -->
       <search-bar v-if="status === 'success'" />
@@ -23,6 +26,9 @@
       <weather-forecast-from-current-day
         v-if="status === 'success'"
         :dailyData="weatherData && weatherData.daily.slice(0, 7)"
+        @handleHourlyDataOnSelectedCard="
+          (index) => handleHourlyDataOnSelectedCard(index)
+        "
       />
       <!-- The below div will be shown in loading state  -->
       <ContentLoader
@@ -45,8 +51,13 @@
           class="hourly-temperature-container p-3 mb-5 bg-white w-75"
         >
           <hourly-temperature
-            :hourData="weatherData && weatherData.hourly.slice(0, 24)"
+            :hourData="weatherData && weatherData.hourly.slice(start, end)"
+            :fullHourData="weatherData && weatherData.hourly"
             :currentData="weatherData && weatherData.current"
+            :start="start"
+            :end="end"
+            :selectedIndex="selectedIndex"
+            :dailyData="weatherData && weatherData.daily.slice(0, 7)"
           />
         </div>
         <!-- The below div will be shown in loading state -->
@@ -72,6 +83,8 @@
       <pressure-humidity
         v-if="status === 'success'"
         :currentData="weatherData && weatherData.current"
+        :selectedIndex="selectedIndex"
+        :dailyData="weatherData && weatherData.daily.slice(0, 7)"
       />
       <content-loader
         v-else-if="status === 'loading'"
@@ -99,6 +112,13 @@
 
   export default {
     name: "ComponentContainer",
+    data() {
+      return {
+        start: 0,
+        end: 7,
+        selectedIndex: null,
+      };
+    },
     props: {
       weatherData: {
         type: Object,
@@ -116,6 +136,33 @@
 
     computed: {
       ...mapGetters(["status"]),
+    },
+    methods: {
+      handleHourlyDataOnSelectedCard(index) {
+        this.selectedIndex = index;
+        if (index === 0) {
+          this.start = 7;
+          this.end = 14;
+        } else if (index === 1) {
+          this.start = 14;
+          this.end = 21;
+        } else if (index === 2) {
+          this.start = 21;
+          this.end = 28;
+        } else if (index === 3) {
+          this.start = 28;
+          this.end = 35;
+        } else if (index === 4) {
+          this.start = 35;
+          this.end = 42;
+        } else if (index === 5) {
+          this.start = 42;
+          this.end = 48;
+        } else if (index === 6) {
+          this.start = 0;
+          this.end = 7;
+        }
+      },
     },
   };
 </script>
