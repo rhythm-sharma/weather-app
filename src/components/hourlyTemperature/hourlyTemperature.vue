@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-auto mr-auto">
+  <div class="temp-card ml-auto mr-auto">
     <!-- Custom information -->
     <div v-if="currentData" class="about text-left">
       <span class="lead"
@@ -42,7 +42,7 @@
   import { tempratureToDegree, getWeatherImage } from "../../../utils/utils";
 
   const options = {
-    responsive: false,
+    responsive: true,
     legend: {
       display: false,
     },
@@ -52,7 +52,7 @@
           display: true,
           ticks: {
             autoSkip: true,
-            fontStyle: "bold",
+            // fontStyle: "bold",
             fontColor: "black",
             fontSize: 14,
           },
@@ -185,7 +185,7 @@
 
 <style scoped>
   .temp-card {
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 0 6px rgba(0, 0, 0, 0.1); */
     position: relative;
     width: auto;
     max-width: 700px;

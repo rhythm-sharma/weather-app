@@ -44,7 +44,7 @@
         <rect x="118" y="16" width="170" height="6" rx="3" />
       </ContentLoader>
 
-      <div :class="{ 'temp-card ml-auto mr-auto mb-4': status === 'success' }">
+      <div :class="{ 'box-card mb-4': status === 'success' }">
         <!-- The below code, shows the hourly temprature data -->
         <div class="d-flex justify-content-center">
           <div
@@ -203,48 +203,15 @@
     display: inline-block;
   }
 
-  .temp-card {
+  .box-card {
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
     position: relative;
     width: auto;
     max-width: 700px;
     border-radius: 10px;
     overflow: hidden;
-  }
-
-  /* hide limit values on X axis */
-  .temp-card #canvas {
-    margin-left: -30px;
-    margin-right: -30px;
-    width: 360px !important;
-  }
-
-  .temp-card .about {
-    height: 150px;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-
-  .temp-card .about h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-weight: 400;
-  }
-
-  .temp-card .about h3 {
-    font-size: 24px;
-    /* color: #fff; */
-  }
-
-  .temp-card .info {
-    float: left;
-    padding: 10px 30px 10px 0;
-  }
-
-  .temp-card .info p {
-    font-size: 11px;
-    /* color: #aaa; */
-    font-weight: 300;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   @media screen and (max-width: 800px) {
@@ -260,6 +227,11 @@
 
     .temp-card .about {
       height: 100px;
+    }
+
+    .box-card {
+      margin-left: 1rem;
+      margin-right: 1rem;
     }
   }
 </style>

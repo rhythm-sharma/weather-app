@@ -81,13 +81,13 @@
 <style scoped>
   .canvas {
     overflow: scroll;
-    width: 700px;
-    height: 300px;
+    /* width: 700px;
+    height: 300px; */
   }
   @media screen and (max-width: 700px) {
     .canvas {
-      width: 100% !important;
-      height: 260px !important;
+      /* width: 100% !important;
+      height: 260px !important; */
     }
   }
 </style>
