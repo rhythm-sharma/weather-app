@@ -23,7 +23,7 @@
           </div>
           <div class="">
             <img
-              class="weather-icon"
+              class="weather-icon mx-1"
               :src="
                 getWeatherImage(
                   suggestedCityWeather.data.current.weather[0].icon
@@ -169,8 +169,8 @@
   }
 
   .weather-icon {
-    height: 48px;
-    width: 48px;
+    height: 30px;
+    width: 30px;
   }
 
   .weather-type {
