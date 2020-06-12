@@ -117,7 +117,7 @@
     data() {
       return {
         start: 0,
-        end: 7,
+        end: 6,
         selectedIndex: null,
       };
     },
@@ -143,26 +143,26 @@
       handleHourlyDataOnSelectedCard(index) {
         this.selectedIndex = index;
         if (index === 0) {
-          this.start = 7;
-          this.end = 14;
+          this.start = 6;
+          this.end = 12;
         } else if (index === 1) {
-          this.start = 14;
-          this.end = 21;
+          this.start = 12;
+          this.end = 18;
         } else if (index === 2) {
-          this.start = 21;
-          this.end = 28;
+          this.start = 18;
+          this.end = 24;
         } else if (index === 3) {
-          this.start = 28;
-          this.end = 35;
+          this.start = 24;
+          this.end = 30;
         } else if (index === 4) {
-          this.start = 35;
-          this.end = 42;
+          this.start = 30;
+          this.end = 36;
         } else if (index === 5) {
+          this.start = 36;
+          this.end = 42;
+        } else if (index === 6) {
           this.start = 42;
           this.end = 48;
-        } else if (index === 6) {
-          this.start = 0;
-          this.end = 7;
         }
       },
     },

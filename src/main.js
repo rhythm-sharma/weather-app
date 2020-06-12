@@ -6,6 +6,7 @@ import "./plugins/bootstrap-vue";
 import App from "./App.vue";
 import axios from "axios";
 import { store } from "./store";
+import "../src/assets/css/main.css";
 
 Vue.use(Vuex);
 

@@ -62,6 +62,7 @@
         {
           display: false,
           ticks: {
+            max: 57,
             beginAtZero: true,
             padding: 100,
           },

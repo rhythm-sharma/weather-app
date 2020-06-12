@@ -4,5 +4,5 @@ export const tempratureToDegree = (temp) => {
 };
 
 export const getWeatherImage = (icon) => {
-  return `http://openweathermap.org/img/wn/${icon}@2x.png`;
+  return `https://raw.githubusercontent.com/rrhythmsharma/weather-app/32ce4524455c16849244a0ec5a303b802f73be7b/src/assets/weather-icons/${icon}.svg`;
 };

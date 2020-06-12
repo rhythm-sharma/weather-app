@@ -5,11 +5,16 @@
         v-for="(item, index) in dailyData"
         :key="index"
         :ref="index"
-        class="weather-forcast-container m-2 py-1"
+        class="weather-forcast-container p-2"
         @click="
           () => {
             addBorders(index, dailyData.length);
             handleHourlyDataOnSelectedCard(index);
+            addBackgroundBasedOnWeather(
+              item.weather[0].icon,
+              index,
+              dailyData.length
+            );
           }
         "
       >
@@ -110,6 +115,19 @@
       handleHourlyDataOnSelectedCard(index) {
         this.$emit("handleHourlyDataOnSelectedCard", index);
       },
+      addBackgroundBasedOnWeather(icon, index, len) {
+        for (let index = 0; index < len; index++) {
+          this.$refs[index][0].classList.remove(
+            "yellow-background",
+            "blue-background"
+          );
+        }
+        if (icon === "01d") {
+          this.$refs[index][0].classList.add("yellow-background");
+        } else {
+          this.$refs[index][0].classList.add("blue-background");
+        }
+      },
     },
   };
 </script>
@@ -119,10 +137,12 @@
     display: inline-block;
     line-height: 1;
     text-align: center;
-    /* transition-duration: 50ms, 50ms, 50ms; */
-    /* transition-property: background-image, border, font-weight; */
     font-weight: 13px;
     width: 73px;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    margin: 1rem !important;
   }
 
   .blue-border {
@@ -176,6 +196,9 @@
       max-width: 95vw;
       overflow: scroll;
       margin-bottom: 1rem !important;
+    }
+    .weather-forcast-container {
+      margin: 0.5rem !important;
     }
   }
 </style>
