@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow: scroll;">
+  <div>
     <canvas class="canvas pb-3" ref="myChart"></canvas>
   </div>
 </template>
